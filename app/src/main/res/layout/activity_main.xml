@@ -4,22 +4,122 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        tools:context=".ui.main.MainActivity">
+        tools:context=".ui.MainActivity">
 
-    <data/>
-    <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+    <data>
+        <variable name="viewModel" type="com.android.task.ui.MainViewModel"/>
+    </data>
 
-        <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Hello World!"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
+    <ScrollView android:layout_width="match_parent" android:layout_height="match_parent">
+        <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginTop="70dp" app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginStart="8dp" android:layout_marginEnd="8dp"
+                    android:hint="@string/latitude"
+                    app:layout_constraintEnd_toEndOf="parent" android:id="@+id/tilLatitude">
+
+                <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:enabled="@{viewModel.isGeofenceAdded != true}"
+                        textChangedListener="@{viewModel.latitudeTextWatcher}"
+                        android:inputType="numberDecimal"/>
+            </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilLongitude"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="21dp"
+                    app:layout_constraintTop_toBottomOf="@+id/tilLatitude"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginStart="8dp" android:layout_marginEnd="8dp"
+                    android:hint="@string/longitude"
+                    app:layout_constraintEnd_toEndOf="parent">
+
+                <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:enabled="@{viewModel.isGeofenceAdded != true}"
+                        textChangedListener="@{viewModel.longitudeTextWatcher}"
+                        android:inputType="numberDecimal"/>
+            </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilRadius"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="22dp"
+                    android:hint="@string/radius"
+                    app:layout_constraintTop_toBottomOf="@+id/tilLongitude"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginStart="8dp" android:layout_marginEnd="8dp"
+                    app:layout_constraintEnd_toEndOf="parent">
+
+                <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:enabled="@{viewModel.isGeofenceAdded != true}"
+                        textChangedListener="@{viewModel.radiusTextWatcher}"
+                        android:inputType="number"/>
+            </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilWifi"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="26dp"
+                    android:hint="@string/wifi"
+                    app:layout_constraintTop_toBottomOf="@+id/tilRadius" app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginStart="8dp" android:layout_marginEnd="8dp"
+                    app:layout_constraintEnd_toEndOf="parent" app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_marginBottom="412dp" app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintVertical_bias="0.0">
+
+                <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:enabled="@{viewModel.isGeofenceAdded != true}"
+                        textChangedListener="@{viewModel.wifiTextWatcher}"
+                        android:inputType="text"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <Button
+                    android:text="@string/add_geofence"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/btnAddGeofence"
+                    android:ems="10"
+                    android:textColor="@color/white"
+                    geofence="@{viewModel.isGeofenceAdded != true}"
+                    android:enabled="@{viewModel.isGeofenceAdded != true}"
+                    android:onClick="@{() -> viewModel.addGeofence()}"
+                    android:layout_marginTop="112dp"
+                    app:layout_constraintTop_toBottomOf="@+id/tilWifi" app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginEnd="8dp" app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.004"/>
+            <Button
+                    android:text="@string/remove_geofence"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:textColor="@color/white"
+                    geofence="@{viewModel.isGeofenceAdded}"
+                    android:enabled="@{viewModel.isGeofenceAdded}"
+                    android:onClick="@{() -> viewModel.removeGeofence()}"
+                    android:id="@+id/btnRemoveGeofence" android:layout_marginTop="112dp"
+                    app:layout_constraintTop_toBottomOf="@+id/tilWifi"
+                    app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="32dp"
+                    android:layout_marginStart="8dp" app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintHorizontal_bias="0.945"/>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
 
 </layout>

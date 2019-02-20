@@ -1,6 +1,6 @@
 package com.android.task.di.module
 
-import com.android.task.ui.main.MainActivity
+import com.android.task.ui.MainActivity
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 

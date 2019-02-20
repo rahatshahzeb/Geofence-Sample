@@ -3,7 +3,7 @@ package com.android.task.di.module
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.android.task.di.ViewModelKey
-import com.android.task.ui.main.MainViewModel
+import com.android.task.ui.MainViewModel
 import com.android.task.vm.SSViewModelFactory
 
 import dagger.Binds
