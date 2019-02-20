@@ -9,17 +9,53 @@ class SharedPreferenceManager(private val sharedPreferences: SharedPreferences) 
 
         const val SHARED_PREFERENCE_NAME = PACKAGE_NAME + ".SC_SHARED_PREFERENCES"
 
-        const val TOKEN = PACKAGE_NAME + ".TOKEN"
+        const val LATITUDE = PACKAGE_NAME + ".LATITUDE"
+        const val LONGITUDE = PACKAGE_NAME + ".LONGITUDE"
+        const val RADIUS = PACKAGE_NAME + ".RADIUS"
+        const val WIFI = PACKAGE_NAME + ".WIFI"
     }
 
-    var token: String?
+    var latitude: String?
         set(value) {
             sharedPreferences.edit().apply {
-                putString(TOKEN, value)
+                putString(LATITUDE, value)
                 apply()
             }
         }
         get() {
-            return sharedPreferences.getString(TOKEN, null)
+            return sharedPreferences.getString(LATITUDE, "")
+        }
+
+    var longitude: String?
+        set(value) {
+            sharedPreferences.edit().apply {
+                putString(LONGITUDE, value)
+                apply()
+            }
+        }
+        get() {
+            return sharedPreferences.getString(LONGITUDE, "")
+        }
+
+    var radius: String?
+        set(value) {
+            sharedPreferences.edit().apply {
+                putString(RADIUS, value)
+                apply()
+            }
+        }
+        get() {
+            return sharedPreferences.getString(RADIUS, "")
+        }
+
+    var wifi: String?
+        set(value) {
+            sharedPreferences.edit().apply {
+                putString(WIFI, value)
+                apply()
+            }
+        }
+        get() {
+            return sharedPreferences.getString(WIFI, "")
         }
 }

@@ -18,13 +18,6 @@ class MainViewModel @Inject constructor(
     val radius: SSData = SSData()
     val wifi: SSData = SSData()
 
-    init {
-        latitude.dataError.value = "Input requried"
-        longitude.dataError.value = "Input requried"
-        radius.dataError.value = "Input requried"
-        wifi.dataError.value = "Input requried"
-    }
-
     fun addGeofence() {
         if (isValidData()) {
             isGeofenceAdded.value = true
@@ -80,9 +73,9 @@ class MainViewModel @Inject constructor(
     }
 
     fun setLatitude(latitude: String) {
+        this.latitude.data.value = latitude
         if (!latitude.isNullOrEmpty()) {
             if (isValidLatitude(latitude.toDouble())) {
-                this.latitude.data.value = latitude
                 this.latitude.dataError.value = null
             } else {
                 this.latitude.dataError.value = "Input requried"
@@ -93,9 +86,9 @@ class MainViewModel @Inject constructor(
     }
 
     fun setLongitude(longitude: String) {
+        this.longitude.data.value = longitude
         if (!longitude.isNullOrEmpty()) {
             if (isValidLongitude(longitude.toDouble())) {
-                this.longitude.data.value = longitude
                 this.longitude.dataError.value = null
             } else {
                 this.longitude.dataError.value = "Input requried"
@@ -107,8 +100,8 @@ class MainViewModel @Inject constructor(
     }
 
     fun setRadius(radius: String) {
+        this.radius.data.value = radius
         if (!radius.isNullOrEmpty()) {
-            this.radius.data.value = radius
             this.radius.dataError.value = null
 
         } else {
@@ -117,8 +110,8 @@ class MainViewModel @Inject constructor(
     }
 
     fun setWifi(wifi: String) {
+        this.wifi.data.value = wifi
         if (!wifi.isNullOrEmpty()) {
-            this.wifi.data.value = wifi
             this.wifi.dataError.value = null
         } else {
             this.wifi.dataError.value = "Input requried"
@@ -140,10 +133,10 @@ class MainViewModel @Inject constructor(
     }
 
     fun isValidData(): Boolean {
-        return latitude.dataError.value.isNullOrEmpty()
-                && longitude.dataError.value.isNullOrEmpty()
-                && radius.dataError.value.isNullOrEmpty()
-                && wifi.dataError.value.isNullOrEmpty()
+        return !latitude.data.value.isNullOrEmpty()
+                && !longitude.data.value.isNullOrEmpty()
+                && !radius.data.value.isNullOrEmpty()
+                && !wifi.data.value.isNullOrEmpty()
     }
 
 }

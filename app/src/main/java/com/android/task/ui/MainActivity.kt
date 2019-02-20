@@ -49,12 +49,19 @@ class MainActivity : AppCompatActivity() {
 
     public override fun onStart() {
         super.onStart()
-
+        restoreData()
         if (!checkPermissions()) {
             requestPermissions()
         } else {
             // Play around with Geofence here
         }
+    }
+
+    private fun restoreData() {
+        mainViewModel.latitude.data.value = sharedPreferenceManager.latitude
+        mainViewModel.longitude.data.value = sharedPreferenceManager.longitude
+        mainViewModel.radius.data.value = sharedPreferenceManager.radius
+        mainViewModel.wifi.data.value = sharedPreferenceManager.wifi
     }
 
     /**
@@ -132,16 +139,32 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun subscribeObserver() {
+        subscribeLatitudeObserver()
         subscribeLatitudeErrorObserver()
+        subscribeLongitudeObserver()
         subscribeLongitudeErrorObserver()
+        subscribeRadiusObserver()
         subscribeRadiusErrorObserver()
+        subscribeWifiObserver()
         subscribeWifiErrorObserver()
         subscribeAddRemoveObserver()
+    }
+
+    fun subscribeLatitudeObserver() {
+        mainViewModel.latitude.data.observe(this, Observer {
+            sharedPreferenceManager.latitude = it
+        })
     }
 
     fun subscribeLatitudeErrorObserver() {
         mainViewModel.latitude.dataError.observe(this, Observer {
             binding.tilLatitude.error = it
+        })
+    }
+
+    fun subscribeLongitudeObserver() {
+        mainViewModel.longitude.data.observe(this, Observer {
+            sharedPreferenceManager.longitude = it
         })
     }
 
@@ -151,9 +174,21 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
+    fun subscribeRadiusObserver() {
+        mainViewModel.radius.data.observe(this, Observer {
+            sharedPreferenceManager.radius = it
+        })
+    }
+
     fun subscribeRadiusErrorObserver() {
         mainViewModel.radius.dataError.observe(this, Observer {
             binding.tilRadius.error = it
+        })
+    }
+
+    fun subscribeWifiObserver() {
+        mainViewModel.wifi.data.observe(this, Observer {
+            sharedPreferenceManager.wifi = it
         })
     }
 
