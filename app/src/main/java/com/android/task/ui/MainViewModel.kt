@@ -4,28 +4,33 @@ import android.text.Editable
 import android.text.TextWatcher
 import androidx.databinding.Bindable
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import com.android.task.repository.Repository
+import com.android.task.util.SingleLiveEvent
 import com.android.task.vm.ObservableViewModel
 import javax.inject.Inject
 
-class MainViewModel @Inject constructor(
-    private val repository: Repository): ObservableViewModel() {
+class MainViewModel @Inject constructor(): ObservableViewModel() {
 
     var isGeofenceAdded = MutableLiveData<Boolean>()
     val latitude: SSData = SSData()
     val longitude: SSData = SSData()
     val radius: SSData = SSData()
     val wifi: SSData = SSData()
+    val generalError = MutableLiveData<String>()
+    val addGeofenceCallback = SingleLiveEvent<Any>()
+    val removeGeofenceCallback = SingleLiveEvent<Any>()
 
     fun addGeofence() {
         if (isValidData()) {
             isGeofenceAdded.value = true
+            addGeofenceCallback.call()
+        } else {
+            generalError.value = "Invalid input"
         }
     }
 
     fun removeGeofence() {
         isGeofenceAdded.value = false
+        removeGeofenceCallback.call()
     }
 
     @Bindable

@@ -31,7 +31,7 @@
                         android:layout_height="wrap_content"
                         android:enabled="@{viewModel.isGeofenceAdded != true}"
                         textChangedListener="@{viewModel.latitudeTextWatcher}"
-                        android:inputType="numberDecimal"/>
+                        android:inputType="numberDecimal|numberSigned"/>
             </com.google.android.material.textfield.TextInputLayout>
             <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/tilLongitude"
@@ -51,7 +51,7 @@
                         android:layout_height="wrap_content"
                         android:enabled="@{viewModel.isGeofenceAdded != true}"
                         textChangedListener="@{viewModel.longitudeTextWatcher}"
-                        android:inputType="numberDecimal"/>
+                        android:inputType="numberDecimal|numberSigned"/>
             </com.google.android.material.textfield.TextInputLayout>
             <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/tilRadius"
@@ -71,7 +71,7 @@
                         android:layout_height="wrap_content"
                         android:enabled="@{viewModel.isGeofenceAdded != true}"
                         textChangedListener="@{viewModel.radiusTextWatcher}"
-                        android:inputType="number"/>
+                        android:inputType="numberDecimal"/>
             </com.google.android.material.textfield.TextInputLayout>
             <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/tilWifi"

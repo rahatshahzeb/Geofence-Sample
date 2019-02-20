@@ -13,6 +13,7 @@ class SharedPreferenceManager(private val sharedPreferences: SharedPreferences) 
         const val LONGITUDE = PACKAGE_NAME + ".LONGITUDE"
         const val RADIUS = PACKAGE_NAME + ".RADIUS"
         const val WIFI = PACKAGE_NAME + ".WIFI"
+        const val GEOFENCES_ADDED_KEY = PACKAGE_NAME + ".GEOFENCES_ADDED_KEY"
     }
 
     var latitude: String?
@@ -57,5 +58,16 @@ class SharedPreferenceManager(private val sharedPreferences: SharedPreferences) 
         }
         get() {
             return sharedPreferences.getString(WIFI, "")
+        }
+
+    var geofenceAddedKey: Boolean
+        set(value) {
+            sharedPreferences.edit().apply {
+                putBoolean(GEOFENCES_ADDED_KEY, value)
+                apply()
+            }
+        }
+        get() {
+            return sharedPreferences.getBoolean(GEOFENCES_ADDED_KEY, false)
         }
 }
