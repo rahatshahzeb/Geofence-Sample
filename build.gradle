@@ -9,6 +9,8 @@ buildscript {
         lifecycle = '2.0.0'
         retrofit = '2.3.0'
         okhttp_logging_interceptor = '3.9.0'
+        play_services_maps = '16.1.0'
+        play_services = '16.0.0'
     }
     repositories {
         google()

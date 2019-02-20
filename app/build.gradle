@@ -53,4 +53,7 @@ dependencies {
     implementation "androidx.room:room-runtime:$room"
     kapt "androidx.room:room-compiler:$room"
 
+    implementation "com.google.android.gms:play-services-location:$play_services"
+    implementation "com.google.android.gms:play-services-maps:$play_services_maps"
+
 }
