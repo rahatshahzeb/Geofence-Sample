@@ -40,7 +40,7 @@ class MainActivity : AppCompatActivity(), OnCompleteListener<Void> {
 
     private val TAG = MainActivity::class.java.simpleName
 
-    private val GEOFENCE_KEY = "custom_location"
+    private val GEOFENCE_KEY = "ZONE"
 
     private lateinit var binding: ActivityMainBinding
 
@@ -127,7 +127,7 @@ class MainActivity : AppCompatActivity(), OnCompleteListener<Void> {
      * Adds geofences, which sets alerts to be notified when the device enters or exits one of the
      * specified geofences. Handles the success or failure results returned by addGeofences().
      */
-    fun addGeofencesButtonHandler() {
+    fun addGeofencesHandler() {
         if (!checkPermissions()) {
             mPendingGeofenceTask = PendingGeofenceTask.ADD
             requestPermissions()
@@ -155,7 +155,7 @@ class MainActivity : AppCompatActivity(), OnCompleteListener<Void> {
      * Removes geofences, which stops further notifications when the device enters or exits
      * previously registered geofences.
      */
-    fun removeGeofencesButtonHandler() {
+    fun removeGeofencesHandler() {
         if (!checkPermissions()) {
             mPendingGeofenceTask = PendingGeofenceTask.REMOVE
             requestPermissions()
@@ -491,13 +491,13 @@ class MainActivity : AppCompatActivity(), OnCompleteListener<Void> {
     fun subscribeAddGeofenceCallback() {
         mainViewModel.addGeofenceCallback.observe(this, Observer {
             populateGeofenceList()
-            addGeofencesButtonHandler()
+            addGeofencesHandler()
         })
     }
 
     fun subscribeRemoveGeofenceCallback() {
         mainViewModel.removeGeofenceCallback.observe(this, Observer {
-            removeGeofencesButtonHandler()
+            removeGeofencesHandler()
         })
     }
 

@@ -9,6 +9,9 @@ import dagger.BindsInstance
 import dagger.Component
 import dagger.android.AndroidInjectionModule
 import javax.inject.Singleton
+import com.android.task.di.module.ServiceBuilderModule
+
+
 
 @Singleton
 @Component(
@@ -16,6 +19,7 @@ import javax.inject.Singleton
         AndroidInjectionModule::class,
         AppModule::class,
         ViewModelModule::class,
+        ServiceBuilderModule::class,
         ActivityBindingModule::class]
 )
 interface AppComponent {

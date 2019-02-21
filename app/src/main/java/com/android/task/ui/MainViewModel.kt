@@ -7,6 +7,13 @@ import androidx.lifecycle.MutableLiveData
 import com.android.task.util.SingleLiveEvent
 import com.android.task.vm.ObservableViewModel
 import javax.inject.Inject
+import android.net.wifi.SupplicantState
+import android.net.wifi.WifiInfo
+import android.content.Context.WIFI_SERVICE
+import androidx.core.content.ContextCompat.getSystemService
+import android.net.wifi.WifiManager
+
+
 
 class MainViewModel @Inject constructor(): ObservableViewModel() {
 

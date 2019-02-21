@@ -7,6 +7,8 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.BitmapFactory
 import android.graphics.Color
+import android.net.wifi.SupplicantState
+import android.net.wifi.WifiManager
 import android.os.Build
 import android.text.TextUtils
 import android.util.Log
@@ -14,11 +16,15 @@ import androidx.core.app.JobIntentService
 import androidx.core.app.NotificationCompat
 import androidx.core.app.TaskStackBuilder
 import com.android.task.R
+import com.android.task.preference.SharedPreferenceManager
 import com.android.task.ui.MainActivity
 import com.google.android.gms.location.Geofence
 import com.google.android.gms.location.GeofencingEvent
 
 import java.util.ArrayList
+import javax.inject.Inject
+import dagger.android.AndroidInjection
+
 
 /**
  * Listener for geofence transition changes.
@@ -28,6 +34,14 @@ import java.util.ArrayList
  * as the output.
  */
 class GeofenceTransitionsJobIntentService : JobIntentService() {
+
+    @Inject
+    lateinit var sharedPreferenceManager: SharedPreferenceManager
+
+    override fun onCreate() {
+        AndroidInjection.inject(this)
+        super.onCreate()
+    }
 
     /**
      * Handles incoming intents.
@@ -48,8 +62,12 @@ class GeofenceTransitionsJobIntentService : JobIntentService() {
         // Get the transition type.
         val geofenceTransition = geofencingEvent.geofenceTransition
 
+        var wifiSSID = getWifiSSID().replace("SSID: ","").replace("\"","")
+
         // Test that the reported transition was of interest.
-        if (geofenceTransition == Geofence.GEOFENCE_TRANSITION_ENTER || geofenceTransition == Geofence.GEOFENCE_TRANSITION_EXIT) {
+        if (geofenceTransition == Geofence.GEOFENCE_TRANSITION_ENTER
+            && wifiSSID.equals(sharedPreferenceManager.wifi)
+            || geofenceTransition == Geofence.GEOFENCE_TRANSITION_EXIT) {
 
             // Get the geofences that were triggered. A single event can trigger multiple geofences.
             val triggeringGeofences = geofencingEvent.triggeringGeofences
@@ -184,5 +202,16 @@ class GeofenceTransitionsJobIntentService : JobIntentService() {
         fun enqueueWork(context: Context, intent: Intent) {
             JobIntentService.enqueueWork(context, GeofenceTransitionsJobIntentService::class.java, JOB_ID, intent)
         }
+    }
+
+    fun getWifiSSID(): String  {
+        var ssid = ""
+        val wifiManager = applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
+        val wifiInfo = wifiManager.connectionInfo
+
+        if (wifiInfo.supplicantState == SupplicantState.COMPLETED) {
+            ssid = wifiInfo.ssid
+        }
+        return ssid
     }
 }
