@@ -1,4 +1,4 @@
-package com.android.task.geofence
+package com.android.task.receiver
 
 import android.content.BroadcastReceiver
 import android.content.Context

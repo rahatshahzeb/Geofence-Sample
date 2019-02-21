@@ -26,7 +26,7 @@ import androidx.lifecycle.ViewModelProviders
 import com.android.task.BuildConfig
 import com.android.task.R
 import com.android.task.databinding.ActivityMainBinding
-import com.android.task.geofence.GeofenceBroadcastReceiver
+import com.android.task.receiver.GeofenceBroadcastReceiver
 import com.android.task.geofence.GeofenceErrorMessages
 import com.android.task.preference.SharedPreferenceManager
 import com.android.task.service.NetworkSchedulerService

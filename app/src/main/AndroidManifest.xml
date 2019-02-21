@@ -37,7 +37,7 @@
         </activity>
 
         <receiver
-                android:name=".geofence.GeofenceBroadcastReceiver"
+                android:name=".receiver.GeofenceBroadcastReceiver"
                 android:enabled="true"
                 android:exported="true" />
 

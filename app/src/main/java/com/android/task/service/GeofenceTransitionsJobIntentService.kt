@@ -63,13 +63,8 @@ class GeofenceTransitionsJobIntentService : JobIntentService() {
         // Get the transition type.
         val geofenceTransition = geofencingEvent.geofenceTransition
 
-
-        val connectedWifi = sharedPreferenceManager.connectedWifi
-        val requiredWifi = sharedPreferenceManager.wifi
-
         // Test that the reported transition was of interest.
         if (geofenceTransition == Geofence.GEOFENCE_TRANSITION_ENTER
-            && requiredWifi.equals(connectedWifi)
             || geofenceTransition == Geofence.GEOFENCE_TRANSITION_EXIT) {
 
             // Get the geofences that were triggered. A single event can trigger multiple geofences.
@@ -186,7 +181,14 @@ class GeofenceTransitionsJobIntentService : JobIntentService() {
     private fun getTransitionString(transitionType: Int): String {
         return when (transitionType) {
             Geofence.GEOFENCE_TRANSITION_ENTER -> getString(R.string.geofence_transition_entered)
-            Geofence.GEOFENCE_TRANSITION_EXIT -> getString(R.string.geofence_transition_exited)
+            Geofence.GEOFENCE_TRANSITION_EXIT -> {
+                val connectedWifi = sharedPreferenceManager.connectedWifi
+                val requiredWifi = sharedPreferenceManager.wifi
+                if (connectedWifi.equals(requiredWifi))
+                    getString(R.string.geofence_transition_entered)
+                else
+                    getString(R.string.geofence_transition_exited)
+            }
             else -> getString(R.string.unknown_geofence_transition)
         }
     }
