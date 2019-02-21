@@ -34,6 +34,3 @@ internal object GeofenceErrorMessages {
         }
     }
 }
-/**
- * Prevents instantiation.
- */

@@ -6,6 +6,8 @@ object SSConstants {
 
     const val PACKAGE_NAME = BuildConfig.APPLICATION_ID
 
+    const val CONNECTIVITY_ACTION = "android.net.conn.CONNECTIVITY_CHANGE"
+
     /**
      * Used to set an expiration time for a geofence. After this amount of time Location Services
      * stops tracking the geofence.

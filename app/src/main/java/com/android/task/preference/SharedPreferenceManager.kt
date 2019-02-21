@@ -13,6 +13,7 @@ class SharedPreferenceManager(private val sharedPreferences: SharedPreferences) 
         const val LONGITUDE = PACKAGE_NAME + ".LONGITUDE"
         const val RADIUS = PACKAGE_NAME + ".RADIUS"
         const val WIFI = PACKAGE_NAME + ".WIFI"
+        const val CONNECTED_WIFI = PACKAGE_NAME + ".CONNECTED_WIFI"
         const val GEOFENCES_ADDED_KEY = PACKAGE_NAME + ".GEOFENCES_ADDED_KEY"
     }
 
@@ -58,6 +59,17 @@ class SharedPreferenceManager(private val sharedPreferences: SharedPreferences) 
         }
         get() {
             return sharedPreferences.getString(WIFI, "")
+        }
+
+    var connectedWifi: String?
+        set(value) {
+            sharedPreferences.edit().apply {
+                putString(CONNECTED_WIFI, value)
+                apply()
+            }
+        }
+        get() {
+            return sharedPreferences.getString(CONNECTED_WIFI, "")
         }
 
     var geofenceAddedKey: Boolean

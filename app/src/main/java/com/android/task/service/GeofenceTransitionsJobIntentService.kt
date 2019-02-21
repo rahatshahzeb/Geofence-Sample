@@ -1,4 +1,4 @@
-package com.android.task.geofence
+package com.android.task.service
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -16,6 +16,7 @@ import androidx.core.app.JobIntentService
 import androidx.core.app.NotificationCompat
 import androidx.core.app.TaskStackBuilder
 import com.android.task.R
+import com.android.task.geofence.GeofenceErrorMessages
 import com.android.task.preference.SharedPreferenceManager
 import com.android.task.ui.MainActivity
 import com.google.android.gms.location.Geofence
@@ -62,11 +63,13 @@ class GeofenceTransitionsJobIntentService : JobIntentService() {
         // Get the transition type.
         val geofenceTransition = geofencingEvent.geofenceTransition
 
-        var wifiSSID = getWifiSSID().replace("SSID: ","").replace("\"","")
+
+        val connectedWifi = sharedPreferenceManager.connectedWifi
+        val requiredWifi = sharedPreferenceManager.wifi
 
         // Test that the reported transition was of interest.
         if (geofenceTransition == Geofence.GEOFENCE_TRANSITION_ENTER
-            && wifiSSID.equals(sharedPreferenceManager.wifi)
+            && requiredWifi.equals(connectedWifi)
             || geofenceTransition == Geofence.GEOFENCE_TRANSITION_EXIT) {
 
             // Get the geofences that were triggered. A single event can trigger multiple geofences.
@@ -200,18 +203,9 @@ class GeofenceTransitionsJobIntentService : JobIntentService() {
          * Convenience method for enqueuing work in to this service.
          */
         fun enqueueWork(context: Context, intent: Intent) {
-            JobIntentService.enqueueWork(context, GeofenceTransitionsJobIntentService::class.java, JOB_ID, intent)
+            JobIntentService.enqueueWork(context, GeofenceTransitionsJobIntentService::class.java,
+                JOB_ID, intent)
         }
     }
 
-    fun getWifiSSID(): String  {
-        var ssid = ""
-        val wifiManager = applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
-        val wifiInfo = wifiManager.connectionInfo
-
-        if (wifiInfo.supplicantState == SupplicantState.COMPLETED) {
-            ssid = wifiInfo.ssid
-        }
-        return ssid
-    }
 }

@@ -3,6 +3,7 @@ package com.android.task.geofence
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import com.android.task.service.GeofenceTransitionsJobIntentService
 
 /**
  * Receiver for geofence transition changes.

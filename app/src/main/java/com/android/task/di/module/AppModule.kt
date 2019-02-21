@@ -1,7 +1,6 @@
 package com.android.task.di.module
 
 import android.content.Context
-import com.android.task.geofence.GeofenceTransitionsJobIntentService
 import com.android.task.preference.SharedPreferenceManager
 import dagger.Module
 import dagger.Provides

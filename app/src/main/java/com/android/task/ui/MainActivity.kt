@@ -3,14 +3,20 @@ package com.android.task.ui
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.PendingIntent
+import android.app.job.JobInfo
+import android.app.job.JobScheduler
+import android.content.ComponentName
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.databinding.DataBindingUtil
@@ -23,6 +29,7 @@ import com.android.task.databinding.ActivityMainBinding
 import com.android.task.geofence.GeofenceBroadcastReceiver
 import com.android.task.geofence.GeofenceErrorMessages
 import com.android.task.preference.SharedPreferenceManager
+import com.android.task.service.NetworkSchedulerService
 import com.android.task.util.SSConstants.GEOFENCE_EXPIRATION_IN_MILLISECONDS
 import com.google.android.gms.location.Geofence
 import com.google.android.gms.location.GeofencingClient
@@ -92,6 +99,7 @@ class MainActivity : AppCompatActivity(), OnCompleteListener<Void> {
         mGeofencingClient = LocationServices.getGeofencingClient(this)
 
         subscribeObserver()
+        scheduleJob()
     }
 
     public override fun onStart() {
@@ -102,6 +110,32 @@ class MainActivity : AppCompatActivity(), OnCompleteListener<Void> {
         } else {
             performPendingGeofenceTask()
         }
+
+        val startServiceIntent = Intent(this, NetworkSchedulerService::class.java)
+        startService(startServiceIntent)
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    private fun scheduleJob() {
+        val wifiJob: JobInfo = JobInfo.Builder(0, ComponentName(this, NetworkSchedulerService::class.java))
+                .setRequiresCharging(true)
+                .setMinimumLatency(1000)
+                .setOverrideDeadline(2000)
+                .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
+                .setPersisted(true)
+                .build()
+
+        val jobScheduler: JobScheduler = getSystemService(Context.JOB_SCHEDULER_SERVICE) as JobScheduler
+        jobScheduler.schedule(wifiJob)
+    }
+
+    override fun onStop() {
+        // A service can be "started" and/or "bound". In this case, it's "started" by this Activity
+        // and "bound" to the JobScheduler (also called "Scheduled" by the JobScheduler). This call
+        // to stopService() won't prevent scheduled jobs to be processed. However, failing
+        // to call stopService() would keep it alive indefinitely.
+        stopService(Intent(this, NetworkSchedulerService::class.java))
+        super.onStop()
     }
 
     /**
